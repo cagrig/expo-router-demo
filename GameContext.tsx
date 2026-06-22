@@ -23,6 +23,14 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// function App() {
+//   return (
+//     <GameProvider>
+//       <Text>...</Text>
+//     </GameProvider>
+//   );
+// }
+
 export const useGame = () => {
   const context = useContext(GameContext);
   if (!context) {

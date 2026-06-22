@@ -1,6 +1,6 @@
 // app/(tabs)/_layout.tsx
 
-import { FontAwesome6 } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -17,7 +17,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="game"
+        name="index"
         options={{
           title: "Kingdom",
           tabBarIcon: ({ color }) => <FontAwesome6 name="fort-awesome" size={20} color={color} />,
@@ -25,10 +25,21 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="resources"
+        options={{
+          title: "Resources",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6 name="money-bill-wheat" size={20} color={color} />
+            // <Text style={{ fontSize: size }}>🌾</Text>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="inventory"
         options={{
           title: "Inventory",
-          tabBarIcon: ({ color }) => <FontAwesome6 name="bag-shopping" size={20} color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="bag-check" size={20} color={color} />,
         }}
       />
 

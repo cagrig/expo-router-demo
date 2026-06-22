@@ -1,4 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useGame } from "@/GameContext";
+import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const buildings = [
   { id: "1", icon: "🌾", name: "Farm", level: 3 },
@@ -12,21 +13,21 @@ const buildings = [
 ];
 
 export default function GameScreen() {
+  const { gameState, setGameState } = useGame();
+
   return (
     <View style={styles.container}>
-      <View style={styles.resources}>
-        <Text style={styles.resource}>🌾 42</Text>
-        <Text style={styles.resource}>🪵 80</Text>
-        <Text style={styles.resource}>⚒️ 15</Text>
-        <Text style={styles.resource}>🪙 320</Text>
-      </View>
-
       <View style={styles.eventCard}>
         <Text style={styles.eventTitle}>Village Event</Text>
         <Text style={styles.eventText}>
           Scouts report strange lights near the abandoned fortress.
         </Text>
       </View>
+
+      <Button
+        title={gameState.score.toString()}
+        onPress={() => setGameState((prev) => ({ ...prev, score: prev.score + 1 }))}
+      ></Button>
 
       <FlatList
         data={buildings}
@@ -52,17 +53,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#121212",
     padding: 16,
-  },
-
-  resources: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-
-  resource: {
-    color: "#fff",
-    fontWeight: "700",
   },
 
   eventCard: {
