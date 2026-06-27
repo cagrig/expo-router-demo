@@ -1,3 +1,5 @@
+import { useGameStore } from "@/GameStore";
+import { Buildings, Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const buildings = [
@@ -11,7 +13,56 @@ const buildings = [
   { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
 ];
 
+type BuildingConfig = {
+  icon: string;
+  title: string;
+  cost: Partial<Resources>;
+  key: keyof Buildings;
+};
+
+const buildingsConfig: BuildingConfig[] = [
+  {
+    icon: "🌾",
+    title: "Farm",
+    cost: {
+      gold: 100,
+      wood: 1000,
+    },
+    key: "farm",
+  },
+  {
+    icon: "🪙",
+    title: "Gold Mine",
+    cost: {
+      wood: 1000,
+      stone: 5000,
+    },
+    key: "goldMine",
+  },
+  {
+    icon: "🪵",
+    title: "Lumber Mill",
+    cost: {
+      gold: 100,
+      wood: 1000,
+    },
+    key: "lumberMill",
+  },
+  {
+    icon: "⚒️",
+    title: "Quarry",
+    cost: {
+      gold: 100,
+      wood: 1000,
+      stone: 2000,
+    },
+    key: "quarry",
+  },
+];
+
 export default function BuildingScreen() {
+  const { buildings, build } = useGameStore();
+
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
@@ -22,17 +73,17 @@ export default function BuildingScreen() {
       </View>
 
       <FlatList
-        data={buildings}
+        data={buildingsConfig}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.key}
         contentContainerStyle={{ gap: 10 }}
         columnWrapperStyle={{ gap: 10 }}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.building}>
+          <TouchableOpacity style={styles.building} onPress={() => build(item.key, item.cost)}>
             <Text style={styles.buildingIcon}>{item.icon}</Text>
-            <Text style={styles.buildingName}>{item.name}</Text>
-            <Text style={styles.level}>Lv {item.level}</Text>
-            <Text style={styles.level}>200 gold</Text>
+            <Text style={styles.buildingName}>{item.title}</Text>
+            <Text style={styles.level}>{buildings[item.key]}</Text>
+            {/* <Text style={styles.level}>200 gold</Text> */}
           </TouchableOpacity>
         )}
       />

@@ -1,4 +1,5 @@
-import { useGame } from "@/GameContext";
+import { useGameStore } from "@/GameStore";
+import { Link } from "expo-router";
 import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const buildings = [
@@ -13,7 +14,9 @@ const buildings = [
 ];
 
 export default function GameScreen() {
-  const { gameState, setGameState } = useGame();
+  // const { gameState, setGameState } = useGame();
+
+  const { resources, addResource } = useGameStore();
 
   return (
     <View style={styles.container}>
@@ -24,10 +27,16 @@ export default function GameScreen() {
         </Text>
       </View>
 
-      <Button
+      {/* <Button
         title={gameState.score.toString()}
         onPress={() => setGameState((prev) => ({ ...prev, score: prev.score + 1 }))}
-      ></Button>
+      ></Button> */}
+
+      <Button title={resources.gold.toString()} onPress={() => addResource("gold", 50)}></Button>
+
+      <Link href="/modal">
+        <Text style={{ color: "white", margin: 20 }}>Yeni Ekran</Text>
+      </Link>
 
       <FlatList
         data={buildings}

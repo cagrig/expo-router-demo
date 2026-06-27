@@ -1,24 +1,17 @@
-import { useGame } from "@/GameContext";
-import { useState } from "react";
+import { useGameStore } from "@/GameStore";
+import { Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const buildings = [
-  { id: "1", icon: "🌾", name: "Farm", level: 3 },
-  { id: "2", icon: "⚒️", name: "Forge", level: 2 },
-  { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
-  { id: "4", icon: "🏹", name: "Barracks", level: 4 },
-  { id: "5", icon: "📚", name: "Library", level: 2 },
-  { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
-  { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
-  { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
-];
-
-interface Resources {
-  gold: number;
-  stone: number;
-  wood: number;
-  food: number;
-}
+// const buildings = [
+//   { id: "1", icon: "🌾", name: "Farm", level: 3 },
+//   { id: "2", icon: "⚒️", name: "Forge", level: 2 },
+//   { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
+//   { id: "4", icon: "🏹", name: "Barracks", level: 4 },
+//   { id: "5", icon: "📚", name: "Library", level: 2 },
+//   { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
+//   { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
+//   { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
+// ];
 
 type ResourceConfig = {
   icon: string;
@@ -55,29 +48,14 @@ const resourcesConfig: ResourceConfig[] = [
 ];
 
 export default function ResourcesScreen() {
-  const [resources, setResources] = useState<Resources>({
-    gold: 5000,
-    stone: 6000,
-    wood: 7000,
-    food: 1000,
-  });
-
-  const setResourceValue = (key: keyof Resources, value: number) => {
-    setResources((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const { gameState, setGameState } = useGame();
+  const { resources, addResource } = useGameStore();
 
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
         <Text style={styles.eventTitle}>Village Event</Text>
         <Text style={styles.eventText}>
-          {gameState.score}
-          {/* Scouts report strange lights near the abandoned fortress. */}
+          Scouts report strange lights near the abandoned fortress.
         </Text>
       </View>
 
@@ -90,7 +68,7 @@ export default function ResourcesScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.building}
-            onPress={() => setResourceValue(item.key, resources[item.key] + item.increment)}
+            onPress={() => addResource(item.key, item.increment)}
           >
             <Text style={styles.buildingIcon}>{item.icon}</Text>
             <Text style={styles.buildingName}>{item.title}</Text>

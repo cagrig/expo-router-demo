@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { GameProvider } from "@/GameContext";
+import { useGameStore } from "@/GameStore";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,23 +16,22 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
+  const { resources } = useGameStore();
+
   return (
     <GameProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <View style={{ flex: 1, backgroundColor: "#121212" }}>
           <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.resources}>
-              <Text style={styles.resource}>🌾 42</Text>
-              <Text style={styles.resource}>🪵 80</Text>
-              <Text style={styles.resource}>⚒️ 15</Text>
-              <Text style={styles.resource}>🪙 320</Text>
+              <Text style={styles.resource}>🌾 {resources.food}</Text>
+              <Text style={styles.resource}>🪵 {resources.wood}</Text>
+              <Text style={styles.resource}>⚒️ {resources.stone}</Text>
+              <Text style={styles.resource}>🪙 {resources.gold}</Text>
             </View>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="modal"
-                options={{ presentation: "formSheet", title: "Pencere" }}
-              />
+              <Stack.Screen name="modal" options={{ title: "Pencere" }} />
             </Stack>
             <StatusBar style="auto" />
           </SafeAreaView>
