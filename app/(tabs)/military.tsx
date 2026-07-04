@@ -1,26 +1,15 @@
 import { useGameStore } from "@/GameStore";
-import { Buildings, Resources } from "@/types";
+import { Military, Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const buildings = [
-  { id: "1", icon: "🌾", name: "Farm", level: 3 },
-  { id: "2", icon: "⚒️", name: "Forge", level: 2 },
-  { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
-  { id: "4", icon: "🏹", name: "Barracks", level: 4 },
-  { id: "5", icon: "📚", name: "Library", level: 2 },
-  { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
-  { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
-  { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
-];
-
-type BuildingConfig = {
+type MilitaryConfig = {
   icon: string;
   title: string;
   cost: Partial<Resources>;
-  key: keyof Buildings;
+  key: keyof Military;
 };
 
-const buildingsConfig: BuildingConfig[] = [
+const buildingsConfig: MilitaryConfig[] = [
   {
     icon: "🌾",
     title: "Farm",
@@ -80,7 +69,7 @@ const buildingsConfig: BuildingConfig[] = [
   },
 ];
 
-export default function BuildingScreen() {
+export default function MilitaryScreen() {
   const { buildings, build } = useGameStore();
 
   return (

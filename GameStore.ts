@@ -14,10 +14,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     lumberMill: 0,
     quarry: 0,
     goldMine: 0,
+    barrack: 0,
+    siege: 0
   },
 
   addResource: (type, amount) => {
-    console.log("BBB");
     set((state) => ({
       resources: {
         ...state.resources,
@@ -55,9 +56,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   build: (type, cost) => {
-
-    console.log("AAAA")
-
     const { spendResources } = get();
     if (!spendResources(cost)) {
       return false;

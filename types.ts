@@ -10,6 +10,14 @@ export interface Buildings {
     lumberMill: number;
     quarry: number;
     goldMine: number;
+    barrack: number;
+    siege: number;
+}
+
+export interface Military {
+    swordsman: number;
+    archer: number;
+    catapult: number;
 }
 
 export interface GameStore {
