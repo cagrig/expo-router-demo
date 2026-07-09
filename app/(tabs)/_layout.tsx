@@ -58,6 +58,14 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome6 name="building" size={20} color={color} />,
         }}
       />
+
+      <Tabs.Screen
+        name="military"
+        options={{
+          title: "Military",
+          tabBarIcon: ({ color }) => <FontAwesome6 name="users-line" size={20} color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

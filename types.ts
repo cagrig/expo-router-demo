@@ -10,19 +10,22 @@ export interface Buildings {
     lumberMill: number;
     quarry: number;
     goldMine: number;
-    barrack: number;
+    barracks: number;
     siege: number;
+    stable: number;
 }
 
 export interface Military {
     swordsman: number;
     archer: number;
     catapult: number;
+    cavalry: number;
 }
 
 export interface GameStore {
     resources: Resources;
     buildings: Buildings;
+    military: Military;
 
     addResource: (type: keyof Resources, amount: number) => void;
     // spendResource: (type: keyof Resources, amount: number) => boolean;
@@ -30,7 +33,14 @@ export interface GameStore {
 
     // addBuilding: (building: Buildings) => void;
     build: (type: keyof Buildings, cost: Partial<Resources>) => boolean;
+
+    produce: (type: keyof Military, cost: Partial<Resources>, building: keyof Buildings) => ProduceResult;
 }
 
+export enum ProduceResult {
+    Ok,
+    BuildingError,
+    ResourceError
+}
 
 // {wood: 200, gold: 1000} --> 

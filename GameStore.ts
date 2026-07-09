@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameStore, Resources } from "./types";
+import { GameStore, ProduceResult, Resources } from "./types";
 
 export const useGameStore = create<GameStore>((set, get) => ({
   resources: {
@@ -14,8 +14,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     lumberMill: 0,
     quarry: 0,
     goldMine: 0,
-    barrack: 0,
-    siege: 0
+    barracks: 0,
+    siege: 0,
+    stable: 0
+  },
+
+  military: {
+    swordsman: 0,
+    archer: 0,
+    cavalry: 0,
+    catapult: 0
   },
 
   addResource: (type, amount) => {
@@ -46,7 +54,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       for (const key in cost) {
         const resource = key as keyof Resources;
-        updated[resource] -= cost[resource] ?? 0;
+        // updated[resource] -= cost[resource] ?? 0;
+        updated[resource] = updated[resource] - (cost[resource] ?? 0);
       }
 
       return { resources: updated };
@@ -70,4 +79,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     return true;
   },
+
+  produce: (type, cost, building) => {
+    const { buildings, spendResources } = get();
+
+    if (buildings[building] === 0) {
+      // Alert.alert("Error", "Not enough building");
+      return ProduceResult.BuildingError;
+    }
+
+    if (!spendResources(cost)) {
+      // Alert.alert("Not enough resource");
+
+      return ProduceResult.ResourceError;
+    }
+
+    set((state) => ({
+      military: {
+        ...state.military,
+        [type]: state.military[type] + 10,
+      },
+    }));
+
+    return ProduceResult.Ok;
+  }
 }));

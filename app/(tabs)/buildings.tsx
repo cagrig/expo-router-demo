@@ -66,7 +66,17 @@ const buildingsConfig: BuildingConfig[] = [
       wood: 10000,
       stone: 5000,
     },
-    key: "barrack",
+    key: "barracks",
+  },
+  {
+    icon: "🏹",
+    title: "Stable",
+    cost: {
+      gold: 5000,
+      wood: 1000,
+      stone: 5000,
+    },
+    key: "stable",
   },
   {
     icon: "⚒️",
