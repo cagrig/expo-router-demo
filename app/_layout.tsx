@@ -6,7 +6,8 @@ import "react-native-reanimated";
 import { GameProvider } from "@/GameContext";
 import { useGameStore } from "@/GameStore";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import "@/stateSubscribe";
+import { loadGame } from "@/storage";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,40 +19,13 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const { resources } = useGameStore();
-
-  const unsubscribe = useGameStore.subscribe((state) => {
-    const s = {
-      resources: state.resources,
-      buildings: state.buildings,
-      military: state.military,
-    };
-
-    const j = JSON.stringify(s);
-
-    console.log(typeof s, typeof j);
-    return s;
-  });
+  const { resources, setGame } = useGameStore();
 
   useEffect(() => {
-    async function readStorage() {
-      const token = await AsyncStorage.getItem("gameState");
-
-      try {
-        JSON.parse(token ?? "{}");
-      } catch (error) {}
-
-      console.log("Stored token:", token);
-    }
-
-    async function writeStorage() {
-      await AsyncStorage.setItem("gameState", "123Abc");
-      console.log("Written");
-    }
-
-    readStorage();
-    // writeStorage();
-  }, []);
+    loadGame().then((gameState) => {
+      setGame(gameState);
+    });
+  }, [setGame]);
 
   return (
     <GameProvider>

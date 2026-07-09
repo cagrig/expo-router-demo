@@ -22,6 +22,12 @@ export interface Military {
     cavalry: number;
 }
 
+export interface GameStateStorage {
+    resources: Resources;
+    buildings: Buildings;
+    military: Military;
+}
+
 export interface GameStore {
     resources: Resources;
     buildings: Buildings;
@@ -35,6 +41,8 @@ export interface GameStore {
     build: (type: keyof Buildings, cost: Partial<Resources>) => boolean;
 
     produce: (type: keyof Military, cost: Partial<Resources>, building: keyof Buildings) => ProduceResult;
+
+    setGame: (gameState: GameStateStorage) => void;
 }
 
 export enum ProduceResult {

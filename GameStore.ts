@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameStore, ProduceResult, Resources } from "./types";
+import { GameStateStorage, GameStore, ProduceResult, Resources } from "./types";
 
 export const useGameStore = create<GameStore>((set, get) => ({
   resources: {
@@ -102,5 +102,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
 
     return ProduceResult.Ok;
+  },
+
+  setGame: (gameState: GameStateStorage) => {
+    set((state) => ({ ...gameState }))
+    // set((state) => {
+
+    //   return {
+    //     resources: gameState.resources,
+    //     buildings: gameState.buildings,
+    //     military: gameState.military
+    //   };
+    // })
   }
 }));
