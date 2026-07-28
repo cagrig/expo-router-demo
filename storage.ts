@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { getUserId } from "./auth";
 import { db } from "./firebaseConfig";
-import { AppStateStorage, GameStateStorage } from "./types";
+import { AppStateStorage, GameStateStorage, UserInfo } from "./types";
 import { getInitialGameInfo } from "./utils";
 
 const LOCAL_KEY = "gameState";
 const SERVER_DOC_KEY = "gameStates";
+const SERVER_USERS_DOC_KEY = "users";
 
 export async function loadLocalGame(): Promise<AppStateStorage | undefined> {
   const gameStateStorage = await AsyncStorage.getItem(LOCAL_KEY);
@@ -83,4 +84,27 @@ export async function loadGame() {
     return data;
   }
 
+}
+
+export async function getUserDataOrDefault(): Promise<UserInfo> {
+  const userId = getUserId();
+
+  const userRef = doc(db, SERVER_USERS_DOC_KEY, userId);
+  const snapshot = await getDoc(userRef);
+
+
+  if (!snapshot.exists()) {
+    const initial = {
+      cityName: "Player Unknown's City",
+    };
+    await setDoc(userRef, initial);
+
+    return initial;
+  }
+
+  return snapshot.data() as UserInfo;
+}
+
+export async function updateUserData(userId: string, data: Partial<UserInfo>) {
+  await updateDoc(doc(db, "users", userId), data);
 }

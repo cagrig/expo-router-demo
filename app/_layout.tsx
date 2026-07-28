@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
 import { login } from "@/auth";
-import { loadGame } from "@/storage";
+import { getUserDataOrDefault, loadGame } from "@/storage";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -21,18 +21,21 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const { resources, setGame } = useGameStore();
+  const { resources, setGame, setCityName } = useGameStore();
 
   useEffect(() => {
     async function loginAndLoadGame() {
       if (await login()) {
         const game = await loadGame();
         setGame(game);
+
+        const userData = await getUserDataOrDefault();
+        setCityName(userData.cityName);
       }
     }
 
     loginAndLoadGame();
-  }, [setGame]);
+  }, [setGame, setCityName]);
 
   return (
     <GameProvider>
@@ -46,7 +49,9 @@ export default function RootLayout() {
               <Text style={styles.resource}>🪙 {resources.gold}</Text>
             </View>
             <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+
               <Stack.Screen name="modal" options={{ title: "Pencere" }} />
             </Stack>
             <StatusBar style="auto" />

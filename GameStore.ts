@@ -26,6 +26,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     catapult: 0
   },
 
+  cityName: "",
+
   addResource: (type, amount) => {
     set((state) => ({
       resources: {
@@ -106,13 +108,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setGame: (gameState: GameStateStorage) => {
     set((state) => ({ ...gameState }))
-    // set((state) => {
+  },
 
-    //   return {
-    //     resources: gameState.resources,
-    //     buildings: gameState.buildings,
-    //     military: gameState.military
-    //   };
-    // })
-  }
+  setCityName: (name) =>
+    set({
+      cityName: name.trim(),
+    }),
 }));
