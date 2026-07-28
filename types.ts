@@ -28,16 +28,18 @@ export interface GameStateStorage {
     military: Military;
 }
 
+export interface AppStateStorage extends GameStateStorage {
+    lastUpdated: number;
+}
+
 export interface GameStore {
     resources: Resources;
     buildings: Buildings;
     military: Military;
 
     addResource: (type: keyof Resources, amount: number) => void;
-    // spendResource: (type: keyof Resources, amount: number) => boolean;
     spendResources: (cost: Partial<Resources>) => boolean;
 
-    // addBuilding: (building: Buildings) => void;
     build: (type: keyof Buildings, cost: Partial<Resources>) => boolean;
 
     produce: (type: keyof Military, cost: Partial<Resources>, building: keyof Buildings) => ProduceResult;
@@ -50,5 +52,3 @@ export enum ProduceResult {
     BuildingError,
     ResourceError
 }
-
-// {wood: 200, gold: 1000} --> 

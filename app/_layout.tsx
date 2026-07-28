@@ -7,11 +7,13 @@ import { GameProvider } from "@/GameContext";
 import { useGameStore } from "@/GameStore";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import "@/stateSubscribe";
-import { loadGame } from "@/storage";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
+
+import { login } from "@/auth";
+import { loadGame } from "@/storage";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -22,9 +24,14 @@ export default function RootLayout() {
   const { resources, setGame } = useGameStore();
 
   useEffect(() => {
-    loadGame().then((gameState) => {
-      setGame(gameState);
-    });
+    async function loginAndLoadGame() {
+      if (await login()) {
+        const game = await loadGame();
+        setGame(game);
+      }
+    }
+
+    loginAndLoadGame();
   }, [setGame]);
 
   return (
