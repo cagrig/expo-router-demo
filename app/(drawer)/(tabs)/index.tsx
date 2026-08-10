@@ -1,4 +1,5 @@
 import { useGameStore } from "@/GameStore";
+import { i18n } from "@/i18n";
 import { Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -42,14 +43,11 @@ export default function GameScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventTitle}>Welcome, Warrior</Text>
+        <Text style={styles.eventTitle}>{i18n.t("welcome", { name: cityName })}</Text>
         <Text style={styles.eventText}>
           A shadow stirs in the forgotten lands. Strange lights haunt the abandoned fortress, and
           only the brave dare uncover the truth.
         </Text>
-
-        <Text style={[styles.eventTitle, { marginTop: 10, fontSize: 16 }]}>Your Kingdom</Text>
-        <Text style={styles.eventText}>{cityName}</Text>
       </View>
 
       <View style={styles.container}>
