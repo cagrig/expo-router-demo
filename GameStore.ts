@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameStateStorage, GameStore, ProduceResult, Resources } from "./types";
+import { BuildResult, GameStateStorage, GameStore, ProduceResult, Resources } from "./types";
 
 export const useGameStore = create<GameStore>((set, get) => ({
   resources: {
@@ -69,7 +69,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   build: (type, cost) => {
     const { spendResources } = get();
     if (!spendResources(cost)) {
-      return false;
+      return BuildResult.ResourceError;
     }
 
     set((state) => ({
@@ -79,7 +79,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
     }));
 
-    return true;
+    return BuildResult.Ok;
   },
 
   produce: (type, cost, building) => {

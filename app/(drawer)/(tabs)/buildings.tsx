@@ -1,23 +1,20 @@
 import { useGameStore } from "@/GameStore";
-import { Buildings, Resources } from "@/types";
+import { Buildings, BuildResult, Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-const buildings = [
-  { id: "1", icon: "🌾", name: "Farm", level: 3 },
-  { id: "2", icon: "⚒️", name: "Forge", level: 2 },
-  { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
-  { id: "4", icon: "🏹", name: "Barracks", level: 4 },
-  { id: "5", icon: "📚", name: "Library", level: 2 },
-  { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
-  { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
-  { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
-];
+import Toast from "react-native-toast-message";
 
 type BuildingConfig = {
   icon: string;
   title: string;
   cost: Partial<Resources>;
   key: keyof Buildings;
+};
+
+const resourceIcons: Record<keyof Resources, string> = {
+  gold: "🪙",
+  wood: "🪵",
+  stone: "🪨",
+  food: "🌾",
 };
 
 const buildingsConfig: BuildingConfig[] = [
@@ -49,7 +46,7 @@ const buildingsConfig: BuildingConfig[] = [
     key: "lumberMill",
   },
   {
-    icon: "⚒️",
+    icon: "🪨",
     title: "Quarry",
     cost: {
       gold: 100,
@@ -93,12 +90,24 @@ const buildingsConfig: BuildingConfig[] = [
 export default function BuildingScreen() {
   const { buildings, build } = useGameStore();
 
+  const doBuild = (type: keyof Buildings, cost: Partial<Resources>) => {
+    const result = build(type, cost);
+    if (result === BuildResult.ResourceError) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Not enough resource",
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventTitle}>Buildings Event</Text>
+        <Text style={styles.eventTitle}>Buildings</Text>
         <Text style={styles.eventText}>
-          Scouts report strange lights near the abandoned fortress.
+          Construct and upgrade buildings to grow your settlement, gather resources, strengthen your
+          economy, and prepare your forces for the challenges ahead.
         </Text>
       </View>
 
@@ -109,11 +118,19 @@ export default function BuildingScreen() {
         contentContainerStyle={{ gap: 10 }}
         columnWrapperStyle={{ gap: 10 }}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.building} onPress={() => build(item.key, item.cost)}>
+          <TouchableOpacity style={styles.building} onPress={() => doBuild(item.key, item.cost)}>
             <Text style={styles.buildingIcon}>{item.icon}</Text>
             <Text style={styles.buildingName}>{item.title}</Text>
             <Text style={styles.level}>{buildings[item.key]}</Text>
-            {/* <Text style={styles.level}>200 gold</Text> */}
+            <View style={styles.costContainer}>
+              <Text style={styles.costLabel}>Cost</Text>{" "}
+              {Object.entries(item.cost).map(([resource, amount]) => (
+                <Text key={resource} style={styles.cost}>
+                  {" "}
+                  {resourceIcons[resource as keyof Resources]} {amount}{" "}
+                </Text>
+              ))}
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -171,4 +188,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 11,
   },
+
+  costContainer: { marginTop: 10, alignItems: "center" },
+  costLabel: { color: "#888", fontSize: 10, marginBottom: 3, textTransform: "uppercase" },
+  cost: { color: "#ccc", fontSize: 11, lineHeight: 17 },
 });

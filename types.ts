@@ -42,7 +42,7 @@ export interface GameStore {
     addResource: (type: keyof Resources, amount: number) => void;
     spendResources: (cost: Partial<Resources>) => boolean;
 
-    build: (type: keyof Buildings, cost: Partial<Resources>) => boolean;
+    build: (type: keyof Buildings, cost: Partial<Resources>) => BuildResult;
 
     produce: (type: keyof Military, cost: Partial<Resources>, building: keyof Buildings) => ProduceResult;
 
@@ -57,6 +57,12 @@ export enum ProduceResult {
     ResourceError
 }
 
+export enum BuildResult {
+    Ok,
+    ResourceError
+}
+
 export interface UserInfo {
+    id: string;
     cityName: string
 }

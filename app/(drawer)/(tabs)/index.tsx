@@ -1,58 +1,80 @@
 import { useGameStore } from "@/GameStore";
-import { Link } from "expo-router";
-import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Resources } from "@/types";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const buildings = [
-  { id: "1", icon: "🌾", name: "Farm", level: 3 },
-  { id: "2", icon: "⚒️", name: "Forge", level: 2 },
-  { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
-  { id: "4", icon: "🏹", name: "Barracks", level: 4 },
-  { id: "5", icon: "📚", name: "Library", level: 2 },
-  { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
-  { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
-  { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
+type ResourceConfig = {
+  icon: string;
+  title: string;
+  increment: number;
+  key: keyof Resources;
+};
+
+const resourcesConfig: ResourceConfig[] = [
+  {
+    icon: "🪙",
+    title: "Gold",
+    increment: 500,
+    key: "gold",
+  },
+  {
+    icon: "🪨",
+    title: "Stone",
+    increment: 400,
+    key: "stone",
+  },
+  {
+    icon: "🪵",
+    title: "Wood",
+    increment: 1000,
+    key: "wood",
+  },
+  {
+    icon: "🌾",
+    title: "Food",
+    increment: 5000,
+    key: "food",
+  },
 ];
 
 export default function GameScreen() {
-  // const { gameState, setGameState } = useGame();
-
-  const { resources, addResource } = useGameStore();
+  const { resources, addResource, cityName } = useGameStore();
 
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventTitle}>Village Event</Text>
+        <Text style={styles.eventTitle}>Welcome, Warrior</Text>
         <Text style={styles.eventText}>
-          Scouts report strange lights near the abandoned fortress.
+          A shadow stirs in the forgotten lands. Strange lights haunt the abandoned fortress, and
+          only the brave dare uncover the truth.
         </Text>
+
+        <Text style={[styles.eventTitle, { marginTop: 10, fontSize: 16 }]}>Your Kingdom</Text>
+        <Text style={styles.eventText}>{cityName}</Text>
       </View>
 
-      {/* <Button
-        title={gameState.score.toString()}
-        onPress={() => setGameState((prev) => ({ ...prev, score: prev.score + 1 }))}
-      ></Button> */}
+      <View style={styles.container}>
+        <View style={styles.eventCard}>
+          <Text style={styles.eventTitle}>Resources</Text>
+        </View>
 
-      <Button title={resources.gold.toString()} onPress={() => addResource("gold", 50)}></Button>
-
-      <Link href="/modal">
-        <Text style={{ color: "white", margin: 20 }}>Yeni Ekran</Text>
-      </Link>
-
-      <FlatList
-        data={buildings}
-        numColumns={2}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ gap: 10 }}
-        columnWrapperStyle={{ gap: 10 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.building}>
-            <Text style={styles.buildingIcon}>{item.icon}</Text>
-            <Text style={styles.buildingName}>{item.name}</Text>
-            <Text style={styles.level}>Lv {item.level}</Text>
-            <Text style={styles.level}>200 gold</Text>
-          </TouchableOpacity>
-        )}
-      />
+        <FlatList
+          data={resourcesConfig}
+          numColumns={2}
+          keyExtractor={(item) => item.key}
+          contentContainerStyle={{ gap: 10 }}
+          columnWrapperStyle={{ gap: 10 }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.building}
+              onPress={() => addResource(item.key, item.increment)}
+            >
+              <Text style={styles.buildingIcon}>{item.icon}</Text>
+              <Text style={styles.buildingName}>{item.title}</Text>
+              <Text style={styles.level}>{resources[item.key]}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </View>
   );
 }

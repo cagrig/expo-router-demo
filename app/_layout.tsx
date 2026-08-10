@@ -45,7 +45,7 @@ export default function RootLayout() {
             <View style={styles.resources}>
               <Text style={styles.resource}>🌾 {resources.food}</Text>
               <Text style={styles.resource}>🪵 {resources.wood}</Text>
-              <Text style={styles.resource}>⚒️ {resources.stone}</Text>
+              <Text style={styles.resource}>🪨 {resources.stone}</Text>
               <Text style={styles.resource}>🪙 {resources.gold}</Text>
             </View>
             <Stack>

@@ -75,14 +75,23 @@ export default function MilitaryScreen() {
         text2: "Not enough building",
       });
     }
+
+    if (result === ProduceResult.ResourceError) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Not enough resource",
+      });
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventTitle}>Military Event</Text>
+        <Text style={styles.eventTitle}>Military</Text>
         <Text style={styles.eventText}>
-          Scouts report strange lights near the abandoned fortress.
+          Recruit and command troops to defend your territory, conquer new lands, and build a
+          powerful army ready for battle.
         </Text>
       </View>
 

@@ -9,11 +9,4 @@ useGameStore.subscribe((state) => {
     };
 
     saveLocalGame(gameState);
-
-    // const user = auth.currentUser;
-
-    // if (!user) {
-    //     throw new Error("User not logged in");
-    // }
-    // saveAppStateToFb(user.uid, gameState);
 });

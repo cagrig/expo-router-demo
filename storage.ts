@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { getUserId } from "./auth";
 import { db } from "./firebaseConfig";
 import { AppStateStorage, GameStateStorage, UserInfo } from "./types";
@@ -95,7 +95,8 @@ export async function getUserDataOrDefault(): Promise<UserInfo> {
 
   if (!snapshot.exists()) {
     const initial = {
-      cityName: "Player Unknown's City",
+      id: userId,
+      cityName: "Player Unknown's Kingdom",
     };
     await setDoc(userRef, initial);
 
@@ -107,4 +108,19 @@ export async function getUserDataOrDefault(): Promise<UserInfo> {
 
 export async function updateUserData(userId: string, data: Partial<UserInfo>) {
   await updateDoc(doc(db, "users", userId), data);
+}
+
+export async function getUsers(): Promise<UserInfo[]> {
+  try {
+    const snapshot = await getDocs(collection(db, "users"));
+
+    const users = snapshot.docs.map((doc) => ({
+      ...doc.data() as UserInfo,
+    }));
+
+    return users;
+  } catch (error) {
+    console.error("Error getting users:", error);
+    return [];
+  }
 }
