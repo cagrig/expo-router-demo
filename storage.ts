@@ -94,9 +94,13 @@ export async function getUserDataOrDefault(): Promise<UserInfo> {
 
 
   if (!snapshot.exists()) {
-    const initial = {
+    const initial: UserInfo = {
       id: userId,
       cityName: "Player Unknown's Kingdom",
+      location: {
+        latitude: 0,
+        longitude: 0
+      }
     };
     await setDoc(userRef, initial);
 

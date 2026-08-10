@@ -28,6 +28,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   cityName: "",
 
+  location: {
+    latitude: 0,
+    longitude: 0
+  },
+
   addResource: (type, amount) => {
     set((state) => ({
       resources: {
@@ -113,5 +118,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setCityName: (name) =>
     set({
       cityName: name.trim(),
+    }),
+
+  setLocation: (location) =>
+    set({
+      location,
     }),
 }));

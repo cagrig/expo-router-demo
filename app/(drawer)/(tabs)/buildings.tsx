@@ -123,7 +123,7 @@ export default function BuildingScreen() {
             <Text style={styles.buildingName}>{item.title}</Text>
             <Text style={styles.level}>{buildings[item.key]}</Text>
             <View style={styles.costContainer}>
-              <Text style={styles.costLabel}>Cost</Text>{" "}
+              <Text style={styles.costLabel}>Cost</Text>
               {Object.entries(item.cost).map(([resource, amount]) => (
                 <Text key={resource} style={styles.cost}>
                   {" "}

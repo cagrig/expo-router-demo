@@ -1,15 +1,17 @@
+import { useGameStore } from "@/GameStore";
 import { getUsers } from "@/storage";
 import { UserInfo } from "@/types";
+import { distanceBetween } from "@/utils";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function UsersScreen() {
+  const { location } = useGameStore();
   const [users, setUsers] = useState<UserInfo[]>([]);
 
   useEffect(() => {
     async function getGameUsers() {
       const gameUsers = await getUsers();
-      console.log(gameUsers);
       setUsers(gameUsers);
     }
 
@@ -32,14 +34,9 @@ export default function UsersScreen() {
 
             <View style={styles.info}>
               <Text style={styles.name}>{item.cityName}</Text>
-
-              {/* <Text style={styles.className}>{item.class}</Text> */}
-
-              <Text style={styles.stats}>{/* Lv {item.level} • ❤️ {item.hp} */}</Text>
-            </View>
-
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>View</Text>
+              <Text style={styles.stats}>
+                {distanceBetween(location, item.location).toFixed(2)} km
+              </Text>
             </View>
           </TouchableOpacity>
         )}

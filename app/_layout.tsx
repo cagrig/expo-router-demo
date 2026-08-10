@@ -13,7 +13,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
 import { login } from "@/auth";
-import { getUserDataOrDefault, loadGame } from "@/storage";
+import { getUserDataOrDefault, loadGame, updateUserData } from "@/storage";
+import { GPSLocation } from "@/types";
+import { getLocation } from "@/utils";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -21,7 +23,7 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const { resources, setGame, setCityName } = useGameStore();
+  const { resources, setGame, setCityName, setLocation } = useGameStore();
 
   useEffect(() => {
     async function loginAndLoadGame() {
@@ -29,13 +31,27 @@ export default function RootLayout() {
         const game = await loadGame();
         setGame(game);
 
+        const locationResult = await getLocation();
+        const location: GPSLocation = {
+          latitude: 0,
+          longitude: 0,
+        };
+
+        if (locationResult) {
+          location.latitude = locationResult.latitude;
+          location.longitude = locationResult.longitude;
+        }
+
         const userData = await getUserDataOrDefault();
+
+        await updateUserData(userData.id, { location });
         setCityName(userData.cityName);
+        setLocation(location);
       }
     }
 
     loginAndLoadGame();
-  }, [setGame, setCityName]);
+  }, [setGame, setCityName, setLocation]);
 
   return (
     <GameProvider>

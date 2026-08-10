@@ -38,6 +38,7 @@ export interface GameStore {
     military: Military;
 
     cityName: string;
+    location: GPSLocation;
 
     addResource: (type: keyof Resources, amount: number) => void;
     spendResources: (cost: Partial<Resources>) => boolean;
@@ -49,6 +50,7 @@ export interface GameStore {
     setGame: (gameState: GameStateStorage) => void;
 
     setCityName: (name: string) => void;
+    setLocation: (location: GPSLocation) => void;
 }
 
 export enum ProduceResult {
@@ -64,5 +66,11 @@ export enum BuildResult {
 
 export interface UserInfo {
     id: string;
-    cityName: string
+    cityName: string;
+    location: GPSLocation;
+}
+
+export interface GPSLocation {
+    latitude: number;
+    longitude: number;
 }
