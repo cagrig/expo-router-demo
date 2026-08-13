@@ -1,17 +1,7 @@
 import { useGameStore } from "@/GameStore";
+import { i18n } from "@/i18n";
 import { Resources } from "@/types";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-// const buildings = [
-//   { id: "1", icon: "🌾", name: "Farm", level: 3 },
-//   { id: "2", icon: "⚒️", name: "Forge", level: 2 },
-//   { id: "3", icon: "🏰", name: "Town Hall", level: 1 },
-//   { id: "4", icon: "🏹", name: "Barracks", level: 4 },
-//   { id: "5", icon: "📚", name: "Library", level: 2 },
-//   { id: "6", icon: "🧙", name: "Mage Tower", level: 1 },
-//   { id: "7", icon: "🧙", name: "Mage Tower1", level: 1 },
-//   { id: "8", icon: "🧙", name: "Mage Tower2", level: 1 },
-// ];
 
 type ResourceConfig = {
   icon: string;
@@ -28,7 +18,7 @@ const resourcesConfig: ResourceConfig[] = [
     key: "gold",
   },
   {
-    icon: "⚒️",
+    icon: "🪨",
     title: "Stone",
     increment: 400,
     key: "stone",
@@ -47,35 +37,42 @@ const resourcesConfig: ResourceConfig[] = [
   },
 ];
 
-export default function ResourcesScreen() {
-  const { resources, addResource } = useGameStore();
+export default function GameScreen() {
+  const { resources, addResource, cityName } = useGameStore();
 
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventTitle}>Village Event</Text>
+        <Text style={styles.eventTitle}>{i18n.t("welcome", { name: cityName })}</Text>
         <Text style={styles.eventText}>
-          Scouts report strange lights near the abandoned fortress.
+          A shadow stirs in the forgotten lands. Strange lights haunt the abandoned fortress, and
+          only the brave dare uncover the truth.
         </Text>
       </View>
 
-      <FlatList
-        data={resourcesConfig}
-        numColumns={2}
-        keyExtractor={(item) => item.key}
-        contentContainerStyle={{ gap: 10 }}
-        columnWrapperStyle={{ gap: 10 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.building}
-            onPress={() => addResource(item.key, item.increment)}
-          >
-            <Text style={styles.buildingIcon}>{item.icon}</Text>
-            <Text style={styles.buildingName}>{item.title}</Text>
-            <Text style={styles.level}>{resources[item.key]}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      <View style={styles.container}>
+        <View style={styles.eventCard}>
+          <Text style={styles.eventTitle}>Resources</Text>
+        </View>
+
+        <FlatList
+          data={resourcesConfig}
+          numColumns={2}
+          keyExtractor={(item) => item.key}
+          contentContainerStyle={{ gap: 10 }}
+          columnWrapperStyle={{ gap: 10 }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.building}
+              onPress={() => addResource(item.key, item.increment)}
+            >
+              <Text style={styles.buildingIcon}>{item.icon}</Text>
+              <Text style={styles.buildingName}>{item.title}</Text>
+              <Text style={styles.level}>{resources[item.key]}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </View>
   );
 }
