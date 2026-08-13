@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "router-demo",
-    "slug": "router-demo",
+    "slug": "imperion",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ldstrc.imperion"
     },
     "web": {
       "output": "static",
@@ -44,6 +45,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fb5d3140-6745-4878-8106-3f4f6123d186"
+      }
+    },
+    "owner": "ldstrc"
   }
 }
